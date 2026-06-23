@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+    <h2>The jQuery AJAX</h2>
+
+    <button type="button" id="changeBtn">Change Content</button>
+
+    <div id="konten"></div>
+
+    <script>
+        $(document).ready(function() {
+
+            // Saat halaman pertama kali dibuka, tampilkan isi ajax_info.txt
+            $("#konten").load("ajax_info.txt");
+
+            // Saat tombol Change Content diklik, tampilkan form Contoh AJAX
+            $("#changeBtn").click(function() {
+                $("#konten").html(`
+                    <h2>Contoh AJAX</h2>
+
+                    <input type="text" id="id_user" placeholder="Masukkan ID">
+                    <input type="text" id="nama_user" placeholder="Masukkan nama">
+                    <button type="button" id="kirim">Kirim</button>
+
+                    <p id="hasil"></p>
+                `);
+            });
+
+            // Tombol Kirim
+            $(document).on("click", "#kirim", function() {
+                var id = $("#id_user").val();
+                var name = $("#nama_user").val();
+
+                $.ajax({
+                    url: "proses.php",
+                    type: "POST",
+                    data: {
+                        id: id,
+                        name: name
+                    },
+                    dataType: "html",
+
+                    success: function(response) {
+                        $("#hasil").html(response);
+                    },
+
+                    error: function(xhr, status, error) {
+                        $("#hasil").html("Error: " + error);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
